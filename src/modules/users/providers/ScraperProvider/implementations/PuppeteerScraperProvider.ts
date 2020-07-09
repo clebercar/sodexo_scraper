@@ -9,13 +9,14 @@ class PuppeteerScraperProvider implements IScraperProvider {
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-web-security',
-        '--disable-features=site-per-process'
-      ]
+        '--disable-features=site-per-process',
+      ],
     });
 
     const page = await browser.newPage();
-    await page.goto('https://www.sodexobeneficios.com.br/sodexo-club/login/',
-      { waitUntil: 'networkidle2' });
+    await page.goto('https://www.sodexobeneficios.com.br/sodexo-club/login/', {
+      waitUntil: 'networkidle2',
+    });
 
     await page.type('#cpfEmail', cpf);
     await page.type('#password', password);
@@ -34,46 +35,48 @@ class PuppeteerScraperProvider implements IScraperProvider {
       ]);
 
       const resume = await this.resume(page);
-
       await browser.close();
-      return { resume, card }
+
+      return { resume, card };
     } catch (e) {
-      throw new Error(e)
+      throw new Error(e);
     }
   }
 
   private async resume(page: Page) {
     return page.evaluate(() => {
-      const BALANCE_INFOMATIONS = document.querySelector('#divBalance')
+      const BALANCE_INFOMATIONS = document.querySelector('#divBalance');
 
-      if(BALANCE_INFOMATIONS) {
-        const balance = BALANCE_INFOMATIONS
-          .querySelector('#balance')?.textContent
+      if (BALANCE_INFOMATIONS) {
+        const balance = BALANCE_INFOMATIONS.querySelector('#balance')
+          ?.textContent;
 
-        const lastBenefit = BALANCE_INFOMATIONS
-          .querySelector('#lastBenefit')?.textContent
+        const lastBenefit = BALANCE_INFOMATIONS.querySelector('#lastBenefit')
+          ?.textContent;
 
-        const nextBenefit = BALANCE_INFOMATIONS
-          .querySelector('#nextBenefit')?.textContent
+        const nextBenefit = BALANCE_INFOMATIONS.querySelector('#nextBenefit')
+          ?.textContent;
 
-        return { balance, lastBenefit, nextBenefit }
+        return { balance, lastBenefit, nextBenefit };
       }
 
-      throw new Error('Not possible to obtain information on the current balance.')
+      throw new Error(
+        'Not possible to obtain information on the current balance.',
+      );
     });
   }
 
   private async cardInformations(page: Page) {
     return page.evaluate(() => {
-      const CARD = document.querySelector('.info-card.pass-card.refeicao-pass')
+      const CARD = document.querySelector('.info-card.pass-card.refeicao-pass');
 
-      if(CARD) {
-        const cardNumber = CARD.querySelector('.card-number')?.textContent
+      if (CARD) {
+        const cardNumber = CARD.querySelector('.card-number')?.textContent;
 
-        return { card: { number: cardNumber } }
+        return { number: cardNumber };
       }
 
-      throw new Error('Not possible to obtain information on the card.')
+      throw new Error('Not possible to obtain information on the card.');
     });
   }
 }
