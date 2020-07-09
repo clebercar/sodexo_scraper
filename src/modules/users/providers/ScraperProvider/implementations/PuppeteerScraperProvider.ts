@@ -1,8 +1,11 @@
 import puppeteer, { Page } from 'puppeteer';
-import IScraperProvider, { IRequest } from '../models/IScraperProvider';
+import IScraperProvider, {
+  IRequest,
+  IResponse,
+} from '../models/IScraperProvider';
 
 class PuppeteerScraperProvider implements IScraperProvider {
-  async extract({ cpf, password }: IRequest) {
+  async extract({ cpf, password }: IRequest): Promise<IResponse> {
     const browser = await puppeteer.launch({
       headless: false,
       args: [
