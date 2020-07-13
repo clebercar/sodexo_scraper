@@ -16,6 +16,6 @@ export default class ScrappersController {
       password,
     });
 
-    return response.json(data);
+    return response.status(201).json(data);
   }
 }
