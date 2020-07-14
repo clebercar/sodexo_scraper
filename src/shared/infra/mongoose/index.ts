@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 
-mongoose.connect('mongodb://:27017/', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+);
