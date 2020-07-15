@@ -5,9 +5,10 @@ import '@shared/container';
 import '@shared/infra/mongoose';
 
 import express, { Express, Request, Response, NextFunction } from 'express';
-import AppError from '@shared/errors/AppError';
 import cors from 'cors';
+import { errors } from 'celebrate';
 
+import AppError from '@shared/errors/AppError';
 import routes from './routes';
 
 class App {
@@ -32,6 +33,7 @@ class App {
   }
 
   errors() {
+    this.express.use(errors());
     this.express.use(
       (err: Error, req: Request, res: Response, _next: NextFunction) => {
         if (err instanceof AppError) {
