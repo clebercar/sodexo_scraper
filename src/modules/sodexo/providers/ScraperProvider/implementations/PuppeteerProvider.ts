@@ -67,7 +67,8 @@ class PuppeteerProvider implements IScraperProvider {
   private async cardInformations(page: Page) {
     return page.evaluate(() => {
       const CARD = document.querySelector('.info-card.pass-card.refeicao-pass');
-      const CARD_NUMBER = CARD?.querySelector('.card-number')?.textContent;
+      const CARD_NUMBER = CARD?.querySelector('.card-balance-number')
+        ?.textContent;
 
       if (CARD_NUMBER) return CARD_NUMBER;
 
