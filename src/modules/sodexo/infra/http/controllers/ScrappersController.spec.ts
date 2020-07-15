@@ -1,5 +1,7 @@
 import request from 'supertest';
 import faker from 'faker';
+import { cpf } from 'cpf-cnpj-validator';
+
 import App from '@shared/infra/http/App';
 import ExtractSodexoInformationsService from '@modules/sodexo/services/ExtractSodexoInformationsService';
 import {
@@ -27,10 +29,19 @@ describe('Given the scrapper endpoint', () => {
     it('should return status created when data is successfully stored', async () => {
       response = await request(App).post('/scrappers').send({
         password: faker.internet.password(),
-        cpf: faker.random.number(),
+        cpf: cpf.generate(),
       });
 
       expect(response.status).toBe(201);
+    });
+
+    it('should return status 400 when CPF is invalid', async () => {
+      response = await request(App).post('/scrappers').send({
+        password: faker.internet.password(),
+        cpf: faker.random.number(),
+      });
+
+      expect(response.status).toBe(400);
     });
   });
 });
